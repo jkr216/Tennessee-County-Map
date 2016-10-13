@@ -1,0 +1,34 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library(stringr)
+library(rgdal)
+library(sp)
+library(readxl)
+
+counties <- readOGR(".", "cb_2015_us_county_20m", verbose = FALSE)
+
+TN <- subset(counties, counties$STATEFP %in% c("47"))
+
+TN <- TN[order(TN$NAME),]
+
+tn_pop_county <- read_excel("~/Tennessee-County-Map/PEP_2015_PEPANNRES.xls", 
+    skip = 3)
+tn_pop_county<-tn_pop_county[c(-96:-102),c(-2:-4)]
+tn_pop_county[,c(2:7)] <- apply(tn_pop_county[,c(2:7)], 2, function(x) gsub(",","", x))
+tn_pop_county[,c(2:7)] <- apply(tn_pop_county[,c(2:7)], 2, function(x) as.numeric(x))
+TN$Pop <- tn_pop_county[7]
+
+save(TN, file = 'sourceData.RDat')
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).

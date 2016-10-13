@@ -1,0 +1,55 @@
+---
+title: "TN Counties"
+resource_files:
+- sourceData.RDat
+runtime: shiny
+output:
+  flexdashboard::flex_dashboard:
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(dygraphs)
+library(leaflet)
+
+##load data
+load('sourceData.RDat')
+
+CountiesPal<-colorNumeric(
+  palette = "GnBu",
+  domain = TN$Pop$`tn_pop_county$X2015`
+)
+
+CountiesPopup <- paste0("County Area: ", 
+                     TN$NAME, 
+                    "Population: ", 
+                     TN$Pop$`tn_pop_county$X2015`)
+
+
+leaf_TN_counties <- leaflet(TN) %>% 
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(stroke = TRUE, color = "black", weight = .4, opacity = 1.0, smoothFactor = 0.5, 
+  fill = TRUE, fillColor = ~CountiesPal(Pop$`tn_pop_county$X2015`), fillOpacity = .8, layerId = ~NAME, popup =    
+  CountiesPopup) %>% 
+  addLegend("bottomright", pal = CountiesPal, values = ~Pop$`tn_pop_county$X2015`, title = "Population", opacity = 1)
+
+```
+
+Counties Map {data-orientation=rows}
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### TN Counties
+
+```{r, echo = FALSE}
+
+leafletOutput("map1")
+
+  output$map1 <- renderLeaflet({
+    leaf_TN_counties
+  })
+
+```
