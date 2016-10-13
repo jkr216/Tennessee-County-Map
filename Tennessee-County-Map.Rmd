@@ -21,9 +21,10 @@ CountiesPal<-colorNumeric(
   domain = TN$Pop2015
 )
 
-CountiesPopup <- paste0("County Area: ", 
+CountiesPopup <- paste0(
+                     "County: ", 
                      TN$NAME, 
-                    "Population: ", 
+                     "<br>Population: ", 
                      TN$Pop2015)
 
 
