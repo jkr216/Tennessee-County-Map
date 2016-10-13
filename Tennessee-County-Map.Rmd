@@ -18,21 +18,21 @@ load('sourceData.RDat')
 
 CountiesPal<-colorNumeric(
   palette = "GnBu",
-  domain = TN$Pop$`tn_pop_county$X2015`
+  domain = TN$Pop2015
 )
 
 CountiesPopup <- paste0("County Area: ", 
                      TN$NAME, 
                     "Population: ", 
-                     TN$Pop$`tn_pop_county$X2015`)
+                     TN$Pop2015)
 
 
 leaf_TN_counties <- leaflet(TN) %>% 
   addProviderTiles("CartoDB.Positron") %>%
   addPolygons(stroke = TRUE, color = "black", weight = .4, opacity = 1.0, smoothFactor = 0.5, 
-  fill = TRUE, fillColor = ~CountiesPal(Pop$`tn_pop_county$X2015`), fillOpacity = .8, layerId = ~NAME, popup =    
+  fill = TRUE, fillColor = ~CountiesPal(Pop2015), fillOpacity = .8, layerId = ~NAME, popup =    
   CountiesPopup) %>% 
-  addLegend("bottomright", pal = CountiesPal, values = ~Pop$`tn_pop_county$X2015`, title = "Population", opacity = 1)
+  addLegend("bottomright", pal = CountiesPal, values = ~Pop2015, title = "Population", opacity = 1)
 
 ```
 

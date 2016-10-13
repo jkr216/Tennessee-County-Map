@@ -24,11 +24,12 @@ tn_pop_county <- read_excel("~/Tennessee-County-Map/PEP_2015_PEPANNRES.xls",
 tn_pop_county<-tn_pop_county[c(-96:-102),c(-2:-4)]
 tn_pop_county[,c(2:7)] <- apply(tn_pop_county[,c(2:7)], 2, function(x) gsub(",","", x))
 tn_pop_county[,c(2:7)] <- apply(tn_pop_county[,c(2:7)], 2, function(x) as.numeric(x))
-TN$Pop <- tn_pop_county[7]
+tn_pop_county<-data.frame(tn_pop_county)
+colnames(tn_pop_county)<-c("County", "2010", "2011", "2012", "2013", "2014", "2015")
+
+TN$Pop2015 <- tn_pop_county$`2015`
 
 save(TN, file = 'sourceData.RDat')
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
